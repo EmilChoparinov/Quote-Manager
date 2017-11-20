@@ -67,12 +67,23 @@ class QuotesManager(models.Manager):
             q_id (int): unique id of the quote that was favorited
         
         Returns:
-            class context: self
+            class context (self): Returns self only if manager gave no responses
+
+            list: a list of responses from the manager, if any response is given; the request is rejected.
         """
-        this_user = Users.objects.get(id=u_id)
-        this_quote= Quotes.objects.get(id=q_id)
-        this_user.favorite_quotes.add(this_quote)
-        return self
+        response = []
+        if len(Users.objects.filter(id=u_id)) == 0:
+            response.append('Not a user!')
+        
+        if len(Quotes.objects.filter(id=q_id)) == 0:
+            response.append('Not a quote!')
+
+        if len(response) == 0:
+            this_user = Users.objects.get(id=u_id)
+            this_quote= Quotes.objects.get(id=q_id)
+            this_user.favorite_quotes.add(this_quote)
+            return self
+        return response
 
     def remove_from_user_fav(self, u_id, q_id):
         """
@@ -84,12 +95,23 @@ class QuotesManager(models.Manager):
             q_id (int): unique id of the quote that was requested to be remove from their list
 
         Returns:
-            class context: self
+            class context (self): Returns slef only if manager gave no responses
+
+            list: a list of responses from the manager, if any response is given; the request is rejected
         """
-        this_user = Users.objects.get(id=u_id)
-        this_quote= this_user.favorite_quotes.all().get(id=q_id)
-        this_user.favorite_quotes.remove(this_quote)
-        return self
+        response = []
+        if len(Users.objects.filter(id=u_id)) == 0:
+            response.append('Not a user!')
+        
+        if len(Quotes.objects.filter(id=q_id)) == 0:
+            response.append('Not a quote!')
+
+        if len(response) == 0:
+            this_user = Users.objects.get(id=u_id)
+            this_quote= this_user.favorite_quotes.all().get(id=q_id)
+            this_user.favorite_quotes.remove(this_quote)
+            return self
+        return response
 
 class Quotes(models.Model):
     """
