@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quotes</title>
+</head>
+<body>
+    <h1>Welcome {{user.alias}}!</h1>
+    <h2>Quotes</h2>
+    <hr>
+    {% for quote in quotes %}
+        <div>
+            <p>{{quote.quoted_by}}: {{quote.quote}}</p>
+            <p>Posted By: {{quote.posted_by}}</p>
+        </div>
+    {% endfor %}
+    <h2>Contribute a quote</h2>
+    <form action="add_quote" method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Quoted By:</td>
+                <td><input type="text" name="quoted_by"></td>
+            </tr>
+            <tr>
+                <td>Message: </td>
+                <td><textarea name="quote"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color:red">{{message}}</p>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
