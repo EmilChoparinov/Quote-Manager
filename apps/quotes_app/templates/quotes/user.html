@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous"> {% load static %}
+    <link rel="stylesheet" href="{% static 'quotes_app/css/user.css' %}">
+    <title>{{user.alias}}'s Page</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="my-2 my-lg-0">
+                <a href="/quotes" class="float-right mr-5 mt-3">Dashboard</a>
+            </div>
+            <div class="my-2 my-lg-0">
+                <a href="/main/logout" class="float-right mr-5 mt-3">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4 wrapper">
+        <h4>Posts by {{user.alias}}</h4>
+        <h4 class="mb-4">Count: {{count}}</h4>
+        <div id="constrain">
+            {% for post in posts%}
+            <div>
+                <p>
+                    <span class="text-danger">{{post.quoted_by}}</span>: {{post.quote}}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

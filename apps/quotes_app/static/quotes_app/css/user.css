@@ -1,0 +1,10 @@
+.wrapper{
+    width: 40rem;
+}
+#constrain{
+    overflow-y: scroll;
+    height: 70vh;
+}
+::-webkit-scrollbar {
+    display: none;
+}

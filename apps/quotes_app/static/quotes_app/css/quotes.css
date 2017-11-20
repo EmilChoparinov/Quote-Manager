@@ -1,0 +1,20 @@
+.contrain_input{
+    width: 11rem;
+}
+.strech_input{
+    width: 30rem;
+}
+#constrain-left{
+    overflow-y: scroll;
+    height: 80vh;
+}
+#constrain-right{
+    overflow-y: scroll;
+    height: 50vh;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+#downsize{
+    font-size: 2vw;
+}

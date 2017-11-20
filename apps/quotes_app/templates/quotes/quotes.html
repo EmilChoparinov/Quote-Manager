@@ -1,41 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+        crossorigin="anonymous"> {% load static %}
+    <link rel="stylesheet" href="{% static 'quotes_app/css/quotes.css' %}">
     <title>Quotes</title>
 </head>
+
 <body>
-    <h1>Welcome {{user.alias}}!</h1>
-    <h2>Quotes</h2>
-    <hr>
-    {% for quote in quotes %}
-        <div>
-            <p>{{quote.quoted_by}}: {{quote.quote}}</p>
-            <p>Posted By: {{quote.posted_by}}</p>
+    <nav class="navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <div class="my-2 my-lg-0">
+                <a href="/main/logout" class="float-right mr-5 mt-3">Logout</a>
+            </div>
         </div>
-    {% endfor %}
-    <h2>Contribute a quote</h2>
-    <form action="add_quote" method="post">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Quoted By:</td>
-                <td><input type="text" name="quoted_by"></td>
-            </tr>
-            <tr>
-                <td>Message: </td>
-                <td><textarea name="quote"></textarea></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color:red">{{message}}</p>
-        {% endfor %}
-    {% endif %}
+    </nav>
+
+    <div class="container">
+        <h3 class="display-4" id="downsize">Welcome {{user.alias}}!</h3>
+        <div class="row">
+            <div class="col-sm">
+                <h5>Quotable Quotes</h5>
+                <div id="constrain-left">
+                    <table class="table">
+                        {% for quote in quotes %}
+                        <tr>
+                            <td>
+                                <p>{{quote.quoted_by}}: {{quote.quote}}</p>
+                                <p>Posted By:
+                                    <a href="/users/{{quote.posted_by.id}}">{{quote.posted_by.alias}}</a>
+                                    <form action="{{quote.id}}/fav" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" value="Add To My List" class="form-control contrain_input bg-primary btn text-white float-right">
+                                    </form>
+                                </p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm">
+                <h5>Your Favorites</h5>
+                <div id="constrain-right">
+                    {% for fav in favorites %}
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <p>{{fav.quoted_by}}: {{fav.quote}}</p>
+                                <p>Posted By:
+                                    <a href="/users/{{fav.posted_by.id}}">{{fav.posted_by.alias}}</a>
+                                    <form action="{{fav.id}}/unfav" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit" value="Remove From My List" class="form-control contrain_input bg-primary btn text-white float-right">
+                                    </form>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    {% endfor %}
+                </div>
+                <h2>Contribute a quote</h2>
+                <form action="add_quote" method="post">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td>Quoted By:</td>
+                            <td>
+                                <input type="text" name="quoted_by" class="form-control strech_input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Message: </td>
+                            <td>
+                                <textarea name="quote" class="form-control strech_input"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" value="Submit" class="form-control contrain_input bg-primary btn text-white float-right">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                {% if messages %} {% for message in messages %}
+                <p style="color:red">{{message}}</p>
+                {% endfor %} {% endif %}
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
